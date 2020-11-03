@@ -68,16 +68,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
 
 <div id="container">
-	<h1>Welcome to CodeIgniter!</h1>
+	<h1>Welcome to CodeIgniter 3 Secure Upload Images!</h1>
 
 	<div id="body">
 		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 
 		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
+		<code>
+			<?= form_open_multipart();?>
+			<?= form_upload('image');?>
+			<?= form_submit('upload', 'Upload!');?>
+			<?= form_close();?>
+		</code>
 
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/Welcome.php</code>
+		<p>Success Result</p>
+		<code>
+			File Name : <?= $image['file_name'];?><br/>
+			File Ext : <?= $image['image_type'];?><br/>
+			File Dimension : <?= $image['image_size_str']['width'] .' x ' . $image['image_size_str']['height'];?><br/>
+			File Size : <?= $image['file_size'];?><br/>
+			File Path : <?= $image['full_path'];?>
+		</code>
+
+		<p>Error Result</p>
+		<code>
+			<?= $error;?>
+		</code>
 
 		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
 	</div>
