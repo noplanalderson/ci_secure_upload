@@ -83,16 +83,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<p>Success Result</p>
 		<code>
-			File Name : <?= $image['file_name'];?><br/>
-			File Ext : <?= $image['image_type'];?><br/>
-			File Dimension : <?= $image['image_size_str']['width'] .' x ' . $image['image_size_str']['height'];?><br/>
-			File Size : <?= $image['file_size'];?><br/>
-			File Path : <?= $image['full_path'];?>
+			<?php 
+			if(!empty($images)):
+			foreach ($images as $image) :?>
+				File Name : <?= $image['file_name'];?><br/>
+				File Ext : <?= $image['image_type'];?><br/>
+				File Dimension : <?= $image['image_size_str']['width'] .' x ' . $image['image_size_str']['height'];?><br/>
+				File Size : <?= $image['file_size'];?><br/>
+				File Path : <?= $image['full_path'];?>
+				<hr/>
+			<?php endforeach; endif;?>
 		</code>
 
 		<p>Error Result</p>
 		<code>
-			<?= $error;?>
+			<?php 
+			if(!empty($errors)):
+				foreach ($errors as $error) :
+				 echo $error.'<br/>';
+				endforeach;
+			endif;
+			?>
 		</code>
 
 		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>

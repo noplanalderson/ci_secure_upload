@@ -3,13 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
 
-	protected $image = array(
-		'file_name' => '',
-		'image_type' => '',
-		'image_size_str' => array('width' => '', 'height' => ''),
-		'file_size' => '',
-		'full_path' => ''
-	);
+	protected $image = '';
 
 	protected $error = '';
 
@@ -36,44 +30,57 @@ class Welcome extends CI_Controller {
 			$filename = preg_replace("/[^a-zA-Z0-9 \-_.]+/i", '', $filename);
 			$filename = str_replace(' ', '-', $filename);
 
-			$config = array(
-				'form_name' => 'image',
-				'upload_path' => FCPATH . 'uploads',
-				'allowed_types' => 'png|jpg|jpeg|webp',
-				'max_size' => '5128',
-				'detect_mime' => TRUE,
-				'file_ext_tolower' => TRUE,
-				'overwrite' => TRUE,
-				'add_salt' => TRUE,
-				'file_name' => $filename,
-				'extension' => 'webp',
-				'quality' => '100%',
-				'maintain_ratio' => TRUE,
-				'width' => 800,
-				'height' => 600
-			);
+            $image_sizes = array(
+                'thumb'     => array(200, 100),
+                'phablet'   => array(300, 200),
+                'tablet'    => array(500, 400),
+                'large'     => array(800, 600),
+            );
+			
+			$this->image = [];
+			$this->error = [];
 
-			$this->load->library('secure_upload');
-			$this->secure_upload->initialize($config);
+			foreach ($image_sizes as $size) :
 
-			if($this->secure_upload->doUpload())
-			{
-				$this->image = $this->secure_upload->data();
-			}
-			else
-			{
-				$this->error = $this->secure_upload->show_errors();
-			}
+				$config = array(
+					'form_name' => 'image',
+					'upload_path' => FCPATH . 'uploads',
+					'allowed_types' => 'png|jpg|jpeg|webp',
+					'max_size' => '5128',
+					'detect_mime' => TRUE,
+					'file_ext_tolower' => TRUE,
+					'overwrite' => TRUE,
+					'enaable_salt' => TRUE,
+					'file_name' => $filename . '_' . $size[0] . 'x' . $size[1],
+					'extension' => 'webp',
+					'quality' => '100%',
+					'maintain_ratio' => TRUE,
+					'width' => $size[0],
+					'height' => $size[1]
+				);
 
-			$this->secure_upload->removeOriginalImage();
+				$this->load->library('secure_upload');
+				$this->secure_upload->initialize($config);
 
-			$data['image'] = $this->image;
-			$data['error'] = $this->error;
+				if($this->secure_upload->doUpload())
+				{
+					$this->image[] = $this->secure_upload->data();
+				}
+				else
+				{
+					$this->error[] = $this->secure_upload->show_errors();
+				}
+
+				$this->secure_upload->removeOriginalImage();
+			endforeach;
+
+			$data['images'] = $this->image;
+			$data['errors'] = $this->error;
 		}
 		else
 		{
-			$data['image'] = $this->image;
-			$data['error'] = $this->error;
+			$data['images'] = $this->image;
+			$data['errors'] = $this->error;
 		}
 
 		$this->load->view('welcome_message', $data);

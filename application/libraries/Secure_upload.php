@@ -5,7 +5,7 @@ defined('BASEPATH') OR die('No direct script access allowed.');
  *
  * @package Secure_upload.php
  * @author Muhammad Ridwan Na'im & Anrie 'Riesurya' Suryaningrat, S.Si, Apt
- * @
+ * @version 1.0
  */
 
 class Secure_upload
@@ -50,7 +50,7 @@ class Secure_upload
 	 * 
 	 * @var boolean
 	 */
-	public $add_salt = TRUE;
+	public $enable_salt = TRUE;
 
 	/**
 	 * Overwrite uploaded file'
@@ -235,7 +235,7 @@ class Secure_upload
 
 	public function doUpload()
 	{
-		$this->new_name = ($this->add_salt === TRUE) ? $this->file_name . '_' . $this->_salt() : $this->file_name;
+		$this->new_name = ($this->enable_salt === TRUE) ? $this->file_name . '_' . $this->_salt() : $this->file_name;
 
 		if (!is_dir($this->upload_path)) mkdir($this->upload_path, 0755, true);
 		
