@@ -2,9 +2,10 @@
 defined('BASEPATH') OR die('No direct script access allowed.');
 /**
  * Secure Upload Image for Codeigniter 3.x
+ * This library combine Codeigniter 3's upload library and image_lib library
  *
  * @package Secure_upload.php
- * @author Muhammad Ridwan Na'im & Anrie 'Riesurya' Suryaningrat, S.Si, Apt
+ * @author Muhammad Ridwan Na'im & Anrie 'Riesurya' Suryaningrat, S.Si, M.TI, Apt
  * @version 1.0
  */
 
@@ -293,6 +294,7 @@ class Secure_upload
 		}
 
 		$this->_CI->image_lib->clear();
+		@unlink($this->source_image);
 	}
 
 	public function show_errors($prefix = '<p>', $suffix = '</p>')
@@ -309,14 +311,10 @@ class Secure_upload
 		}
 	}
 
-	public function removeOriginalImage()
-	{
-		@unlink($this->source_image);
-	}
-
 	public function data()
 	{
-		$full_path = str_replace('\\', '/', $this->cleared_path.'/'.$this->new_name.'.'.$this->extension);
+		$path = str_replace('\\', '/', $this->cleared_path.'/');
+		$full_path = $path . '/' . $this->new_name.'.'.$this->extension;
 		$filesize = filesize($full_path);
 
 		return array(
@@ -324,7 +322,8 @@ class Secure_upload
 			'image_type' => $this->extension,
 			'image_size_str' => array('width' => $this->width, 'height' => $this->height),
 			'file_size' => round($filesize/1024, 0) . ' KB',
-			'full_path' => $full_path
+			'full_path' => $full_path,
+			'cleared_path' => $path
 		);
 	}
 }

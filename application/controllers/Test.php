@@ -1,26 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Test extends CI_Controller {
 
 	protected $image = '';
 
 	protected $error = '';
 
 	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 * Index page or upload test page
+	 * 
+	 * This test perform single upload file with multiple image dimension
+	 * using Secure_upload library for Codeigniter 3.x
+	 * 
 	 */
 	public function index()
 	{
@@ -30,6 +22,7 @@ class Welcome extends CI_Controller {
 			$filename = preg_replace("/[^a-zA-Z0-9 \-_.]+/i", '', $filename);
 			$filename = str_replace(' ', '-', $filename);
 
+			// Define Image Dimensions
             $image_sizes = array(
                 'thumb'     => array(200, 100),
                 'phablet'   => array(300, 200),
@@ -50,7 +43,7 @@ class Welcome extends CI_Controller {
 					'detect_mime' => TRUE,
 					'file_ext_tolower' => TRUE,
 					'overwrite' => TRUE,
-					'enaable_salt' => TRUE,
+					'enable_salt' => TRUE,
 					'file_name' => $filename . '_' . $size[0] . 'x' . $size[1],
 					'extension' => 'webp',
 					'quality' => '100%',
@@ -70,8 +63,6 @@ class Welcome extends CI_Controller {
 				{
 					$this->error[] = $this->secure_upload->show_errors();
 				}
-
-				$this->secure_upload->removeOriginalImage();
 			endforeach;
 
 			$data['images'] = $this->image;
@@ -83,6 +74,6 @@ class Welcome extends CI_Controller {
 			$data['errors'] = $this->error;
 		}
 
-		$this->load->view('welcome_message', $data);
+		$this->load->view('upload', $data);
 	}
 }

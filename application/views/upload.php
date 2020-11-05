@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<title>Codeigniter Secure Upload Image</title>
 
 	<style type="text/css">
 
@@ -63,17 +63,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		border: 1px solid #D0D0D0;
 		box-shadow: 0 0 8px #D0D0D0;
 	}
+
+	.credits {
+		font-style: italic;
+		font-family: Cambria;
+	}
+
 	</style>
 </head>
 <body>
 
 <div id="container">
-	<h1>Welcome to CodeIgniter 3 Secure Upload Images!</h1>
+	<h1>Image Upload Test using Secure Upload Image</h1>
 
 	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 
-		<p>If you would like to edit this page you'll find it located at:</p>
+		<p>Upload your image here:</p>
 		<code>
 			<?= form_open_multipart();?>
 			<?= form_upload('image');?>
@@ -90,10 +95,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				File Ext : <?= $image['image_type'];?><br/>
 				File Dimension : <?= $image['image_size_str']['width'] .' x ' . $image['image_size_str']['height'];?><br/>
 				File Size : <?= $image['file_size'];?><br/>
-				File Path : <?= $image['full_path'];?>
+				File Path : <?= $image['cleared_path'];?><br/>
+				File Full Path : <?= $image['full_path'];?>
 				<hr/>
 			<?php endforeach; endif;?>
 		</code>
+
+		<?php 
+		if(!empty($images)):
+		foreach ($images as $image) :?>
+			<code><img src="<?= site_url('uploads/cleared/'.$image['file_name']);?>" ></code>
+		<?php endforeach; endif;?>
 
 		<p>Error Result</p>
 		<code>
@@ -106,7 +118,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			?>
 		</code>
 
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+		<p class="credits">Credits : Muhammad Ridwan Na'im, MTCNA & Anrie 'Riesurya' Suryaningrat, S.Si, M.TI, Apt.</p>
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
