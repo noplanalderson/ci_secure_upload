@@ -1,12 +1,14 @@
 <?php
-defined('BASEPATH') OR die('No direct script access allowed.');
+defined('BASEPATH') OR exit('No direct script access allowed.');
 /**
  * Secure Upload Image for Codeigniter 3.x
  * This library combine Codeigniter 3's upload library and image_lib library
  *
  * @package Secure_upload.php
- * @author Muhammad Ridwan Na'im & Anrie 'Riesurya' Suryaningrat, S.Si, M.TI, Apt
+ * @author Muhammad Ridwan Na'im & Anrie 'Riesurya' Suryaningrat
  * @version 1.0
+ * @since  2020
+ * 
  */
 
 class Secure_upload
